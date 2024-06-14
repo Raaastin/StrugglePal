@@ -44,7 +44,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         )
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data("https://en.wikipedia.org/wiki/Simba#/media/File:Simba_(_Disney_character_-_adult).png")
+                .data("https://shatterpointdb.com/media/fx4lex3u/star-wars-shatterpoint-grievous-unit-card.png")
                 .crossfade(true)
                 .build(),
             contentDescription = "example",
