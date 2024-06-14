@@ -19,8 +19,8 @@ class Unit(
     var abilityCardUrl: String? = null
     var stanceCardUrl1: String? = null
     var stanceCardUrl2: String? = null
-    var top = "-15px"
-    var left = "-670px"
+    var top = -7.1
+    var left = 11.5
     var keyWords: List<String> = mutableListOf()
     var abilities: List<Ability> = mutableListOf()
 }
@@ -39,7 +39,7 @@ class Ability(
     var type: AbilityType? = null,
     var cost: Int = 0,
     var text: String? = null,
-    var synergies: List<Synergy> = mutableListOf(),
+    var synergies: List<Synergy>? = null,
     var timing: List<Timing> = mutableListOf()
 )
 
