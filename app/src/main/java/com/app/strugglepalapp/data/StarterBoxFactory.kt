@@ -1,7 +1,9 @@
-object StarterBoxFactory {
-    private const val warbandname = "Starter Set"
+package com.app.strugglepalapp.data
 
-    fun kalani(): Unit {
+object StarterBoxFactory {
+    private val warbandname = "Starter Set"
+
+    public fun kalani(): Unit {
         val unit = Unit(
             "Kalani, Super Tactical Robot",
             "Kalani",

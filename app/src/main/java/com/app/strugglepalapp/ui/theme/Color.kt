@@ -9,3 +9,9 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+val UnitNameColor = Color(0xFFffd4ac)
+val UnitTypeColor = Color(0xFFff6d6d)
+var UnitKeyWordsColor = Color(0xFFffa736)
+
+var MainBackgroundColor = Color(0xFF121212)

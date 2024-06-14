@@ -1,4 +1,7 @@
-import StarterBoxFactory
+package com.app.strugglepalapp
+
+import com.app.strugglepalapp.data.StarterBoxFactory
+import com.app.strugglepalapp.data.Unit
 
 class UnitDatabaseService() {
 

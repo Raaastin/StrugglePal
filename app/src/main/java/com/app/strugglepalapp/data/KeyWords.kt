@@ -1,40 +1,42 @@
+package com.app.strugglepalapp.data
+
 object KeyWords {
-    const val BattleDroid = "Battle Droid"
-    const val Droid = "Droid"
-    const val SeparatistAlliance = "Separatist Alliance"
-    const val Trooper = "Trooper"
+    val BattleDroid = "Battle Droid"
+    val Droid = "Droid"
+    val SeparatistAlliance = "Separatist Alliance"
+    val Trooper = "Trooper"
 
-    const val Dathomirian = "Dathomirian"
-    const val NightSister = "Nightsister"
-    const val ForceUser = "Force User"
+    val Dathomirian = "Dathomirian"
+    val NightSister = "Nightsister"
+    val ForceUser = "Force User"
 
-    const val Scoundrel = "Scoundrel"
-    const val ShadowCollective = "Shadow Collective"
-    const val Mandalorian = "Mandalorian"
-    const val SuperCommando = "Super Commando"
+    val Scoundrel = "Scoundrel"
+    val ShadowCollective = "Shadow Collective"
+    val Mandalorian = "Mandalorian"
+    val SuperCommando = "Super Commando"
 
-    const val _501ST = "501ST"
-    const val GalacticRepublic = "Galactic Republic"
-    const val Jedi = "Jedi"
-    const val CloneTrooper = "Clone Trooper"
+    val _501ST = "501ST"
+    val GalacticRepublic = "Galactic Republic"
+    val Jedi = "Jedi"
+    val CloneTrooper = "Clone Trooper"
 
-    const val ClanKryze = "Clan Kryze"
-    const val NiteOwls = "Nite Owls"
+    val ClanKryze = "Clan Kryze"
+    val NiteOwls = "Nite Owls"
 
-    const val DeathWatch = "Death Watch"
-    const val CloneCommando = "Clone Commando"
+    val DeathWatch = "Death Watch"
+    val CloneCommando = "Clone Commando"
 
-    const val Handmaiden = "Handmaiden"
-    const val B1 = "B1"
-    const val B2 = "B2"
+    val Handmaiden = "Handmaiden"
+    val B1 = "B1"
+    val B2 = "B2"
 
-    const val GalacticEmpire = "Galactic Empire"
-    const val Sith = "Sith"
-    const val Stormtrooper = "Stormtrooper"
-    const val DeathTrooper = "Death Trooper"
+    val GalacticEmpire = "Galactic Empire"
+    val Sith = "Sith"
+    val Stormtrooper = "Stormtrooper"
+    val DeathTrooper = "Death Trooper"
 
-    const val BountyHunter = "Bounty Hunter"
-    const val Mercenary = "Mercenary"
+    val BountyHunter = "Bounty Hunter"
+    val Mercenary = "Mercenary"
 
     val keyWordsList = listOf(
         BattleDroid, Droid, SeparatistAlliance,

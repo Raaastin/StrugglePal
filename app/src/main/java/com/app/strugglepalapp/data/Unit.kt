@@ -1,3 +1,5 @@
+package com.app.strugglepalapp.data
+
 class Unit(
     val name: String,
     val uniqueName: String,
