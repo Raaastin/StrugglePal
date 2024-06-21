@@ -21,4 +21,8 @@ class UnitDatabaseService() {
         superCommandos
     )
 
+    fun GetUnit(name: String): Unit?{
+        var result = unitList.find { it.name == name }
+        return result
+    }
 }
