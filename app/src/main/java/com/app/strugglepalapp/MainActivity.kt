@@ -5,10 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,61 +17,70 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.overscroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.strugglepalapp.data.Unit
+import com.app.strugglepalapp.data.UnitType
 import com.app.strugglepalapp.ui.theme.MainBackgroundColor
 import com.app.strugglepalapp.ui.theme.StrugglePalAppTheme
 import com.app.strugglepalapp.ui.theme.UnitKeyWordsColor
 import com.app.strugglepalapp.ui.theme.UnitNameColor
 import com.app.strugglepalapp.ui.theme.UnitTypeColor
 
-var unitArray: Array<Unit?> = arrayOfNulls(6)
 var unitDatabaseService = UnitDatabaseService()
 
 class MainActivity : ComponentActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             StrugglePalAppTheme {
+
+                val mainActivityViewModel:MainActivityViewModel = viewModel()
+
                 Scaffold(
                     topBar = {
                         Text(text = "Todo: Add menu")
                     },
                     bottomBar = {
-                        Text(text = "Array Empty")
+                        ArrayUnit(mainActivityViewModel.unitArray)
                     },
                     modifier = Modifier
-                        .fillMaxSize()
-                ) { innerPadding ->
-                    UnitList(
-                        unitList = unitDatabaseService.unitList,
-                        modifier = Modifier
-                            .background(
-                                color = MainBackgroundColor
-                            )
-                            .padding(innerPadding)
+                        .fillMaxSize(),
+                    content = { innerPadding ->
+                        UnitList(
+                            unitList = unitDatabaseService.unitList,
+                            arrayUnit = mainActivityViewModel.unitArray,
+                            modifier = Modifier
+                                .background(
+                                    color = MainBackgroundColor
+                                )
+                                .padding(innerPadding)
                         )
-                }
+                    }
+                )
             }
         }
     }
@@ -152,42 +160,87 @@ fun UnitRow(unitName: String, modifier: Modifier = Modifier){
     }
 }
 
-fun ClickUnitRow(unitName: String){
+fun ClickUnitRow(unit: Unit, arrayUnit: MutableList<Unit?>){
     var index = 0;
 
-    // fill 1st slot
-    if(unitArray[0]?.name != unitName){
-        unitArray[index] = unitDatabaseService.GetUnit(unitName)
+    // case: Unit already exists. Remove the unit from the selection
+    var unitFound = arrayUnit.find { it?.name == unit.name }
+    if(unitFound != null) {
+        arrayUnit[arrayUnit.indexOf(unitFound)] = null
+        // todo: save
+        return
     }
-    else
-        unitArray[index] = null
 
+    // Case: this name unit does not exist => do nothing
+    var unit = UnitDatabaseService().unitList.find { it.name == unit.name }
+    if(unit == null)
+        return
+
+    // Case: Only if a slot is selected: replace the slot.
+    // Todo when slot is a thing
+
+    // Case: Unit type full => do nothing, cannot add the unit
+    if(arrayUnit.filter { it?.type ==  unit.type}.count() >= 2)
+        return
+
+    // Case: nominal => add Unit to the selection
+    if(arrayUnit[0]?.name != unit.name) {
+        addUnitToSelectionArray(unit, arrayUnit)
+    }
 }
 
+fun addUnitToSelectionArray(unit: Unit, arrayUnit: MutableList<Unit?>) {
+    // Add unit to the unit selection
+    when (unit.type) {
+        UnitType.Primary -> {
+            if (arrayUnit[0] == null)
+                arrayUnit[0] = unit
+            else
+                arrayUnit[3] = unit
+        }
+        UnitType.Secondary -> {
+            if (arrayUnit[1] == null)
+                arrayUnit[1] = unit
+            else
+                arrayUnit[4] = unit
+        }
+        UnitType.Support -> {
+            if (arrayUnit[2] == null)
+                arrayUnit[2] = unit
+            else
+                arrayUnit[5] = unit
+        }
+    }
+}
+
+
 @Composable
-fun ArrayUnit(){
+fun ArrayUnit(unitArray: List<Unit?>, modifier: Modifier = Modifier){
     if(unitArray.isEmpty()){
         Text(text = "Array Empty")
     }
 
-    unitArray.forEach { 
-        if(it != null){
-            Text(text = it.name)
-        }
-        else{
-            Text(text = "null")
+    Row(){
+        unitArray.forEach {
+            if(it != null){
+                ProfilePicture(unitName = it.name)
+            }
+            else{
+                ProfilePicture(unitName = "no unit")
+            }
         }
     }
+
 }
         
 @Composable
-fun UnitList(unitList: List<Unit>, modifier: Modifier = Modifier){
+fun UnitList(unitList: List<Unit>, arrayUnit: MutableList<Unit?> ,modifier: Modifier = Modifier){
     LazyColumn (modifier = modifier){
         items(unitList){it ->
             UnitRow(unitName = it.name,
                 Modifier.clickable(
                     onClick = {
-                        ClickUnitRow(it.name)
+                        ClickUnitRow(it, arrayUnit)
                     }
                 )
             )
@@ -201,19 +254,35 @@ fun ProfilePicture(unitName: String, modifier: Modifier = Modifier) {
     val database = UnitDatabaseService()
     val unit = database.unitList.find { it.name == unitName }
 
+
     if (unit != null) {
-        Column {
+        Image(
+            painter = painterResource(id = R.drawable.grievous1),
+            contentDescription = "default pp",
 
-            Image(
-                painter = painterResource(id = R.drawable.grievous1),
-                contentDescription = "default pp",
+            modifier = modifier
+                .clip(CircleShape)
+                .scale(10f)
+                .size(50.dp)
+                .offset(x = -7.1.dp, y = 11.5.dp)
+                .border(2.dp, Color.Black)
+        )
+    }
+    else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = "default pp",
 
-                modifier = modifier
-                    .clip(CircleShape)
-                    .scale(10f)
-                    .size(50.dp)
-                    .offset(x = -7.1.dp, y = 11.5.dp)
-            )
+            modifier = modifier
+                .clip(CircleShape)
+                .scale(10f)
+                .size(50.dp)
+                .offset(x = -7.1.dp, y = 11.5.dp)
+                .border(2.dp, Color.Black)
+        )
+    }
+}
+
 
 //            AsyncImage(
 //                model = ImageRequest.Builder(context = LocalContext.current)
@@ -226,9 +295,6 @@ fun ProfilePicture(unitName: String, modifier: Modifier = Modifier) {
 //                    .size(50.dp)
 //                    .offset(x = -7.1.dp, y = 11.5.dp)
 //            )
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
