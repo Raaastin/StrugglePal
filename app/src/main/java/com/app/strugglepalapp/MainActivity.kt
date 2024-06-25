@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         Text(text = "Todo: Add menu")
                     },
                     bottomBar = {
-                        ArrayUnit(mainActivityViewModel.unitArray)
+                        ArrayUnit(mainActivityViewModel.unitArray, Modifier)
                     },
                     modifier = Modifier
                         .fillMaxSize(),
@@ -216,17 +217,21 @@ fun addUnitToSelectionArray(unit: Unit, arrayUnit: MutableList<Unit?>) {
 
 @Composable
 fun ArrayUnit(unitArray: List<Unit?>, modifier: Modifier = Modifier){
-    if(unitArray.isEmpty()){
-        Text(text = "Array Empty")
-    }
-
-    Row(){
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ){
         unitArray.forEach {
             if(it != null){
-                ProfilePicture(unitName = it.name)
+                ProfilePicture(
+                    unitName = it.name
+                )
             }
             else{
-                ProfilePicture(unitName = "no unit")
+                ProfilePicture(
+                    unitName = "no unit"
+                )
             }
         }
     }
@@ -262,10 +267,10 @@ fun ProfilePicture(unitName: String, modifier: Modifier = Modifier) {
 
             modifier = modifier
                 .clip(CircleShape)
+                .border(2.dp, Color.Black, shape = CircleShape)
                 .scale(10f)
                 .size(50.dp)
                 .offset(x = -7.1.dp, y = 11.5.dp)
-                .border(2.dp, Color.Black)
         )
     }
     else {
@@ -275,10 +280,10 @@ fun ProfilePicture(unitName: String, modifier: Modifier = Modifier) {
 
             modifier = modifier
                 .clip(CircleShape)
+                .border(2.dp, Color.Black, shape = CircleShape)
                 .scale(10f)
                 .size(50.dp)
                 .offset(x = -7.1.dp, y = 11.5.dp)
-                .border(2.dp, Color.Black)
         )
     }
 }
