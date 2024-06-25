@@ -126,6 +126,7 @@ fun UnitRow(unitName: String, modifier: Modifier = Modifier){
                 modifier = Modifier,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
+                lineHeight = 16.sp,
                 color = UnitNameColor
             )
             Text(
